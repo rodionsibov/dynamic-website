@@ -1,3 +1,3 @@
 # dynamic-website
 
-* [] Title
+* [ ] Title
