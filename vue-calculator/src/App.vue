@@ -1,12 +1,12 @@
 <template>
   <main class="calculator">
-    <div class="display">
-      {{display}}
+    <div ref="display" class="display">
+      <span ref="displayText">{{display}}</span>
     </div>
     <div class="buttons">
       <div class="button-row" v-for="row in buttonRows">
 	<div
-	  @click="buttonClick(button)"
+	  @click="buttonClicks[button.type](button)"
 	  :class="{ operator: button.type == 'operator' }"
 	  :style="button.style"
 	  class="button"
@@ -22,14 +22,65 @@
 
  export default {
    methods: {
-     buttonClick(button) {
-       if (button.type == 'number') {
-	 this.display += button.text;
-       }
+     performOperation() {
+       this.display = this.operations[this.currentOperator](+this.previousValue, +this.display);
      }
    },
-   data: () => ({
-     display: '',
+   watch: {
+     display() {
+       let fontSize = 50;
+       this.$refs.display.setAttribute('style', 'font-size: 50px');
+       while (this.$refs.displayText.offsetWidth + 50 > this.$refs.display.offsetWidth) {
+	 fontSize--;
+	 this.$refs.display.setAttribute('style', 'font-size:' + fontSize + 'px');
+       }
+       
+     }
+   },
+   data: (vm) => ({
+     displayFont: '4vw',
+     display: '0',
+     previousValue: '',
+     currentOperator: '',
+     buttonClicks: {
+       number(button) {
+	 if (vm.previousValue === null) {
+	   vm.previousValue = Number(vm.display);
+	   vm.display = '';
+	 }
+	 
+	 if (button.text == '.' && vm.display.includes('.')) return;
+	 vm.display += button.text;
+
+	 if (vm.display[0] == '0' && vm.display[1] != '.') {
+	   vm.display = vm.display.slice(1);
+	 }
+       },
+       operator(button) {
+	 if (vm.currentOperator) {
+	   vm.performOperation();
+	   
+	 }
+	 vm.previousValue = null;
+	 vm.currentOperator = button.text;
+       },
+       special(button) {
+	 if (button.text == 'AC') {
+	   vm.display = '';
+	 } else if (button.text == '+/-') {
+	   vm.display *= -1; 
+	 } else if (button.text == '=') {
+	   vm.performOperation();
+	   vm.currentOperator = '';
+	 }
+       }
+     },
+     operations: {
+       '/': (a, b) => a / b,
+       '*': (a, b) => a * b,
+       '-': (a, b) => a - b,
+       '+': (a, b) => a + b,
+     },
      buttonRows: [
        [
 	 {
@@ -115,7 +166,7 @@
 	 },
 	 {
 	   text: '=',
-	   type: 'operator',
+	   type: 'special',
 	   style: 'flex-basis: calc(100%/2)'
 	 }
        ]
