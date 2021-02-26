@@ -1,13 +1,14 @@
 <template>
   <main class="calculator">
     <div class="display">
-      123
+      {{display}}
     </div>
     <div class="buttons">
       <div class="button-row" v-for="row in buttonRows">
 	<div
+	  @click="buttonClick(button)"
 	  :class="{ operator: button.type == 'operator' }"
-
+	  :style="button.style"
 	  class="button"
 	  v-for="button in row">
 	  {{button.text}}
@@ -20,20 +21,28 @@
 <script>
 
  export default {
+   methods: {
+     buttonClick(button) {
+       if (button.type == 'number') {
+	 this.display += button.text;
+       }
+     }
+   },
    data: () => ({
+     display: '',
      buttonRows: [
        [
 	 {
 	   text: 'AC',
-	   type: 'operator'
+	   type: 'special'
 	 },
 	 {
 	   text: '+/-',
-	   type: 'operator'
+	   type: 'special'
 	 },
 	 {
 	   text: '%',
-	   type: 'operator'
+	   type: 'special'
 	 },
 	 {
 	   text: '/',
@@ -101,11 +110,13 @@
 	 },
 	 {
 	   text: '.',
-	   type: 'number'
+	   type: 'number',
+	   style: 'flex-basis: calc(100%/2)'
 	 },
 	 {
 	   text: '=',
-	   type: 'operator'
+	   type: 'operator',
+	   style: 'flex-basis: calc(100%/2)'
 	 }
        ]
      ]
@@ -114,31 +125,71 @@
 </script>
 
 <style>
-
- .calculator {
-   width: 20%;
-   font-family: sans-serif;
+ 
+ body {
+   width: 100%;
+   height: 100vh;
+   margin: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 3vw;
  }
 
+
+ .calculator {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-around;
+   width: 50vw;
+   height: 70vh;
+   font-family: sans-serif;
+   border-radius: 5px;
+   border: 1px solid gray;
+   overflow: hidden;
+ }
+
+ .display {
+   height: 10vh;
+   text-align: right;
+   background: gray;
+   color: white;
+   font-size: 2em;
+ }
+ 
  .buttons {
-   text-align: center;
+   height: 60vh;
  }
 
  .button-row {
    display: flex;
    justify-content: space-around;
+   width: 100%;
+   height: 20%;
  }
  
  .button {
-   display: inline-block;
-   border: 1px solid grey;
+   display: flex;
+   justify-content: center;
+   align-items: center;
    width: 100%;
-   padding: 0.4em;
+   outline: 1px solid gray;
    background: #eee;
  }
+
+ .button:active {
+   background: gray;
+ }
+
+
 
  .operator {
    color: white;
    background: darkorange;
  }
+
+ 
+ 
+
+
 </style>
