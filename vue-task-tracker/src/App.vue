@@ -57,9 +57,9 @@ export default {
 
       return data;
     },
-    async created() {
-      this.tasks = await this.fetchTasks();
-    },
+  },
+  async created() {
+    this.tasks = await this.fetchTasks();
   },
 };
 </script>
