@@ -38,7 +38,15 @@ export default {
     toggleAddTask() {
       this.showAddTask = !this.showAddTask;
     },
-    addTask(task) {
+    async addTask(task) {
+      const res = await fetch("api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          body: JSON.stringify(task),
+        },
+      });
+
       this.tasks = [...this.tasks, task];
     },
     deleteTask(id) {
@@ -52,7 +60,13 @@ export default {
       );
     },
     async fetchTasks() {
-      const res = await fetch("http://localhost:5000/tasks");
+      const res = await fetch("api/tasks");
+      const data = await res.json();
+
+      return data;
+    },
+    async fetchTask(id) {
+      const res = await fetch(`api/tasks/${id}`);
       const data = await res.json();
 
       return data;
