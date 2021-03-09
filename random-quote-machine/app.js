@@ -3,8 +3,8 @@ const app = Vue.createApp({
         return {
             author: "Kevin Kruse",
             quote: "Life isn’t about getting and having, it’s about giving and being.",
-            counter: 0,
-            message: "Random Quote Machine"
+            message: "Random Quote Machine",
+            tweetURL: null
         }
     },
     methods: {
@@ -17,20 +17,13 @@ const app = Vue.createApp({
 
             this.author = quotes[random].author
             this.quote = quotes[random].quote
-            console.log(random)
         },
-        reverseMessage() {
-            this.message = this.message
-            .split('')
-            .reverse()
-            .join('')
+        tweet() {
+            const tweetURL = `https://twitter.com/intent/tweet?text=${quote} - ${author}`
+
         }
     },
-    mounted() {
-        const interval = setInterval(() => {
-            this.counter++
-        }, 1000)
-    }
+
 })
 
 app.mount('#app')

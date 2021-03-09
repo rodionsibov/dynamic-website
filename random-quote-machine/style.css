@@ -1,0 +1,12 @@
+body {
+    background-color: salmon;
+}
+
+.box {
+    background-color: seashell;
+}
+
+.wrapper {
+    height: 100vh;
+}
+

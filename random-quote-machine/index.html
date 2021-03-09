@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
 
     <link rel="stylesheet" href="style.css">
     <title>Random Quote Machine</title>
@@ -12,17 +17,18 @@
 
 <body>
 
-    <div id="app">
-        <h1>{{counter}}</h1>
-        Author: {{author}}
-        <br>
-        Quote: {{quote}}
-        <br>
-        <br>
-        <button @click='getQuotes' v-bind:title="message">Get user</button>
-        <button v-on:click='reverseMessage'>Reverse Message</button>
-        {{message}}
+    <div id="app" class="container-fluid">
+        <div class="wrapper d-flex align-items-center justify-content-center">
+            <div class="col-6 box p-4 rounded">
+                {{quote}} <cite class="d-block text-right">- {{author}}</cite>
+                <div class="d-flex justify-content-between mt-3">
+                    <a :href="tweetURL" v-on:click="tweet" target="_black" class="btn btn-primary">Tweet</a>
+                    <button class="btn btn-primary" @click="getQuotes" v-bind:title="message">Get Quotes</button>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="https://unpkg.com/vue@3.0.5"></script>
     <script src="app.js"></script>
 </body>
