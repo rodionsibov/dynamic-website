@@ -19,11 +19,17 @@
 
     <div id="app" class="container-fluid">
         <div class="wrapper d-flex align-items-center justify-content-center">
-            <div class="col-6 box p-4 rounded">
-                {{quote}} <cite class="d-block text-right">- {{author}}</cite>
+            <div class="col-sm-6 box p-4 rounded">
+                <i class="fas fa-quote-left fa-2x"></i>
+                <div class="mt-1">
+                    <span class="quote">{{quote}}</span> <cite class="d-block text-right">-
+                        {{author}}</cite>
+                </div>
                 <div class="d-flex justify-content-between mt-3">
-                    <a :href="tweetURL" v-on:click="tweet" target="_black" class="btn btn-primary">Tweet</a>
-                    <button class="btn btn-primary" @click="getQuotes" v-bind:title="message">Get Quotes</button>
+                    <a :href="`https://twitter.com/intent/tweet?text=${quote}-${author}`" target="_blank"
+                        class="btn btn-sm btn-primary"><i class="fab fa-twitter"></i> Tweet</a>
+                    <button class="btn btn-sm btn-primary" @click="getQuotes" v-bind:title="message"><i
+                            class="fas fa-random"></i> Get Quotes</button>
                 </div>
             </div>
         </div>
