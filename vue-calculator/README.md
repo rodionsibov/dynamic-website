@@ -1,4 +1,4 @@
-# random-quote-machine
+# vue-calculator
 
 ## Project setup
 ```
