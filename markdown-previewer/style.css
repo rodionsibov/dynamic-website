@@ -1,0 +1,12 @@
+body {
+    background-color: coral;
+}
+
+.preview {
+    background-color: white;
+    padding: 10px;
+}
+
+textarea, .preview {
+    min-height: 400px;
+}
