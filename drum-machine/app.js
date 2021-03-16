@@ -69,6 +69,10 @@ const app = Vue.createApp({
         },
         play(e) {
             e.target.children[0].play()
+            e.target.classList.add('active')
+            setTimeout(() => {
+            e.target.classList.remove('active')
+            }, 500)
         }
     },
     computed: {
