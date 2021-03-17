@@ -72,14 +72,18 @@ const app = Vue.createApp({
             this.$refs.display.children[index].classList.add('active')
             setTimeout(() => {
                 this.$refs.display.children[index].classList.remove('active')
-            }, 500)
+            }, 200)
         },
         move(e) {
-            this.drumPads.forEach(drumPad => {
+            this.drumPads.forEach((drumPad, index) => {
                 if (e.key.toUpperCase() === drumPad.key) {
                     const audio = new Audio()
                     audio.src = drumPad.url
                     audio.play()
+                    this.$refs.display.children[index].classList.add('active')
+                    setTimeout(() => {
+                        this.$refs.display.children[index].classList.remove('active')
+                    }, 200)
                 }
             })
         }
