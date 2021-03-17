@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: plum;
+    background-color: rgb(39, 34, 39);
     margin: 0;
     font-family: 'Lato', sans-serif;
 }
@@ -27,7 +27,7 @@ body {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-.box {
+.drum-pad {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
     display: flex;
     background-color: #333;
@@ -40,11 +40,20 @@ body {
     border-radius: 10px;
     height: 100px;
     width: 100px;
-    font-size: 50px;
-
+    font-size: 40px;
+    font-weight: 700;
+    transition: 0.1s transform;
 }
 
-.box.active {
+.drum-pad.active {
     opacity: 0.8;
     transform: scale(0.95);
+}
+
+.song {
+    width: 100%;
+    margin: 10px;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
 }

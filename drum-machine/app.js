@@ -4,10 +4,11 @@ const app = Vue.createApp({
         `
     <div id="drum-machine" class="container">
         <div id="display" ref="display" class="display">
-            <div class="box" v-for="(drumPad, index) in drumPads" :key="index" @click="play(index)">
+            <div class="drum-pad" v-for="(drumPad, index) in drumPads" :key="index" @click="play(index)">
                {{ drumPad.key }}
                <audio :src="drumPad.url" class="clip" :id="drumPad.key"></audio>
             </div>
+            <div class="song" ref="song">?</div>
         </div>
     </div>
     `,
@@ -69,25 +70,35 @@ const app = Vue.createApp({
             audio.src = this.drumPads[index].url
             audio.play()
 
+            this.$refs.song.textContent = `${this.drumPads[index].song}`
+            
             this.$refs.display.children[index].classList.add('active')
+            this.$refs.display.children[index].style.background = `hsl(${Math.floor(Math.random() * 360)},50%,50%)`
             setTimeout(() => {
                 this.$refs.display.children[index].classList.remove('active')
             }, 200)
         },
         move(e) {
+            if (document.getElementById(e.key.toUpperCase())) {
+                document.getElementById(e.key.toUpperCase()).pause()
+            }
             this.drumPads.forEach((drumPad, index) => {
-                // if (document.getElementById(e.key.toUpperCase())) {
-                //     document.getElementById(e.key.toUpperCase()).play()
-                // }
                 if (e.key.toUpperCase() === drumPad.key) {
+
                     const audio = new Audio()
                     audio.src = drumPad.url
                     audio.play()
 
+                    this.$refs.song.textContent = drumPad.song
+
                     this.$refs.display.children[index].classList.add('active')
-                    setTimeout(() => {
+                    this.$refs.display.children[index].style.background = `hsl(${Math.floor(Math.random() * 360)},50%,50%)`
+                    // setTimeout(() => {
+                    //     this.$refs.display.children[index].classList.remove('active')
+                    // }, 200)
+                    audio.addEventListener('ended', () => {
                         this.$refs.display.children[index].classList.remove('active')
-                    }, 200)
+                    })
                 }
             })
         }
