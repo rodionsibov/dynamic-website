@@ -69,13 +69,29 @@ const app = Vue.createApp({
         },
         play(e) {
             e.target.children[0].play()
+
             e.target.classList.add('active')
             setTimeout(() => {
             e.target.classList.remove('active')
             }, 500)
+        },
+        move(e) {
+            this.drumPads.forEach(drumPad => {
+                if (e.key.toUpperCase() === drumPad.key) {
+                    const audio = new Audio()
+                    audio.src = drumPad.url
+                    audio.play()
+                }
+            })
         }
     },
     computed: {
        
+    },
+    mounted() {
+        window.addEventListener('keydown', this.move);
+    },
+    unmounted() {
+        window.removeEventListener('keydown', this.move);
     }
 })
