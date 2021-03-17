@@ -3,8 +3,8 @@ const app = Vue.createApp({
         /*html*/
         `
     <div id="drum-machine" class="container">
-        <div id="display" class="display">
-            <div class="box" v-for="(drumPad, index) in drumPads" :key="index" @click="play">
+        <div id="display" ref="display" class="display">
+            <div class="box" v-for="(drumPad, index) in drumPads" :key="index" @click="play(index)">
                {{ drumPad.key }}
                <audio :src="drumPad.url" class="clip" :id="drumPad.key"></audio>
             </div>
@@ -13,7 +13,6 @@ const app = Vue.createApp({
     `,
     data() {
         return {
-            selectedVariant: 0,
             drumPads: [
                 {
                     "key": "Q",
@@ -64,15 +63,15 @@ const app = Vue.createApp({
         }
     },
     methods: {
-        updateVariant(index) {
-            this.selectedVariant = index
-        },
-        play(e) {
-            e.target.children[0].play()
+        play(index) {
+            // e.target.children[0].play()
+            const audio = new Audio()
+            audio.src = this.drumPads[index].url
+            audio.play()
 
-            e.target.classList.add('active')
+            this.$refs.display.children[index].classList.add('active')
             setTimeout(() => {
-            e.target.classList.remove('active')
+                this.$refs.display.children[index].classList.remove('active')
             }, 500)
         },
         move(e) {
@@ -86,7 +85,7 @@ const app = Vue.createApp({
         }
     },
     computed: {
-       
+
     },
     mounted() {
         window.addEventListener('keydown', this.move);
