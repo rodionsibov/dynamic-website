@@ -9,6 +9,7 @@ const app = Vue.createApp({
     },
     methods: {
         saveItem() {
+            if(this.newItem !== '')
             this.items.push(this.newItem)
             this.newItem = ''
         },
