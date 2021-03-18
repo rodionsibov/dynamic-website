@@ -1,7 +1,8 @@
-.btn {
-    margin-top: 10px;
+input {
+    margin: 10px 10px 0 0;
 }
 
-input {
-    margin-right: 3px;
+.strikeout {
+    text-decoration: line-through;
+    opacity: 0.5;
 }
