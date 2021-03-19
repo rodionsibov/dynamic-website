@@ -3,10 +3,33 @@
     <div class="user-profile__user-panel">
       <h1 class="user-profile__username">@{{ user.username }}</h1>
       <div class="user-profile__admin-badge" v-if="user.isAdmin">Admin</div>
-
       <div class="user-profile__follower-count">
         <strong>Followers: </strong> {{ followers }}
       </div>
+      <form
+        class="user-profile__create-twoot"
+        @submit.prevent="createNewTwoot"
+        :class="{ exceeded: newTwootCharacterCount > 180 }"
+      >
+        <label for="newTwoot"
+          ><strong>New Twoot</strong> ({{ newTwootCharacterCount }}/180)</label
+        >
+        <textarea id="newTwoot" rows="4" v-model="newTwootContent" maxlength="180"></textarea>
+
+        <div class="user-profile__create-twoot-type">
+          <label for="newTwootType"><strong>Type: </strong></label>
+          <select id="newTwootType" v-model="selectedTwootType">
+            <option
+              v-for="(option, index) in twootTypes"
+              :key="index"
+              :value="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+          <button>Twoot</button>
+        </div>
+      </form>
     </div>
     <div class="user-profile__twoots-wrapper">
       <TwootItem
@@ -30,6 +53,18 @@ export default {
   },
   data() {
     return {
+      newTwootContent: "",
+      selectedTwootType: "instant",
+      twootTypes: [
+        {
+          value: "draft",
+          name: "Draft",
+        },
+        {
+          value: "instant",
+          name: "Instant Twoot",
+        },
+      ],
       followers: 0,
       user: {
         id: 1,
@@ -59,8 +94,8 @@ export default {
     },
   },
   computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
+    newTwootCharacterCount() {
+      return this.newTwootContent.length;
     },
   },
   methods: {
@@ -70,14 +105,24 @@ export default {
     toggleFavourite(id) {
       console.log(`Favourited Tweet #${id}`);
     },
+    createNewTwoot() {
+      if (this.newTwootContent && this.selectedTwootType !== "draft") {
+        this.user.twoots.unshift({
+          id: this.user.twoots.length + 1,
+          content: this.newTwootContent,
+        });
+        this.newTwootContent = "";
+      }
+    },
   },
   mounted() {
     this.followUser();
+    console.log(this.$router)
   },
 };
 </script>
 
-<style>
+<style scoped>
 .user-profile {
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -106,5 +151,31 @@ export default {
 
 h1 {
   margin-bottom: 5px;
+}
+
+.user-profile__create-twoot {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile__create-twoot-type {
+  display: flex;
+  justify-content: space-between;
+}
+
+.exceeded {
+  color: red;
+  border-color: red;
+}
+
+textarea {
+  margin: 5px 0;
+}
+
+.exceeded button {
+  background-color: red;
+  border: none;
+  color: white;
 }
 </style>
