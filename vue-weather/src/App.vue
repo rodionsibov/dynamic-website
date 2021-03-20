@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'warm': weather.registered.age < 5 }">
     <main>
       <div class="search-box">
         <input
@@ -66,6 +66,10 @@ export default {
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
+}
+
+#app.warm {
+  background: red;
 }
 
 main {
