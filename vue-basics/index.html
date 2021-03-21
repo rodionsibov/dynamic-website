@@ -13,19 +13,24 @@
         .well {
             background-color: aliceblue;
             padding: 30px;
-            margin: 20px;
+            margin: 10px;
             border-top: 1px solid dodgerblue;
         }
-    
+
         img {
             width: 100%;
             margin: 5px 0;
+        }
+
+        .wrap {
+            display: flex;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 
 <body>
-    <div id="app" class="container mt-4">
+    <div id="app" class="wrap container mt-4">
         <div class="well">
             <form action="">
                 <div class="mb-3">
@@ -55,8 +60,10 @@
                     <input type="text" id="techno" class="form-control" placeholder="techno"
                         v-model="formData.technologies">
                 </div>
-                <button type="submit" class="btn btn-primary" @click="submit">Submit</button>
+                <button type="submit" class="btn btn-primary mb-3" @click="submit">Submit</button>
+                <div class="submit-form" v-if="!showDetails">Please submit the form</div>
             </form>
+
         </div>
 
         <div class="well" v-if="showDetails">
@@ -71,7 +78,6 @@
             </ul>
         </div>
 
-        <div class="well text-muted" v-else>Please submit the form</div>
     </div>
 
     <script>
