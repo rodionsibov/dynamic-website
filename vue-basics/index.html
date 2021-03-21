@@ -9,6 +9,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <title>Document</title>
+    <style>
+        .well {
+            background-color: aliceblue;
+            padding: 30px;
+            margin: 20px;
+            border-top: 1px solid dodgerblue;
+        }
+    
+        img {
+            width: 100%;
+            margin: 5px 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,51 +29,94 @@
         <div class="well">
             <form action="">
                 <div class="mb-3">
-                    <label for="firstname" class="form-label">First Name</label>
-                    <input type="text" id="firstname" class="form-control" placeholder="firstname">
+                    <label for="firstname" class="form-label fw-bold">First Name</label>
+                    <input type="text" id="firstname" class="form-control" placeholder="firstname"
+                        v-model="formData.firstname">
                 </div>
                 <div class="mb-3">
-                    <label for="lastname" class="form-label">Last Name</label>
-                    <input type="text" id="lastname" class="form-control" placeholder="lastname">
+                    <label for="lastname" class="form-label fw-bold">Last Name</label>
+                    <input type="text" id="lastname" class="form-control" placeholder="lastname"
+                        v-model="formData.lastname">
                 </div>
                 <div class="mb-3">
-                    <label for="url" class="form-label">Blog</label>
-                    <input type="text" id="url" class="form-control" placeholder="url">
+                    <label for="url" class="form-label fw-bold">Blog</label>
+                    <input type="text" id="url" class="form-control" placeholder="url" v-model="formData.url">
                 </div>
                 <div class="mb-3">
-                    <label for="badge" class="form-label">Personal badge (html)</label>
-                    <textarea class="form-control" id="badge" cols="10" rows="3"></textarea>
+                    <label for="badge" class="form-label fw-bold">Personal badge (html)</label>
+                    <textarea class="form-control" id="badge" cols="10" rows="3" v-model="formData.badge"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="book" class="form-label">Favourite book ISBN (like 00453443)</label>
-                    <input type="text" id="book" class="form-control" placeholder="book">
+                    <label for="book" class="form-label fw-bold">Favourite book ISBN (like 0201558025)</label>
+                    <input type="text" id="book" class="form-control" placeholder="book" v-model="formData.bookisbn">
                 </div>
                 <div class="mb-3">
-                    <label for="techno" class="form-label">Technologies</label>
-                    <input type="text" id="techno" class="form-control" placeholder="techno">
+                    <label for="techno" class="form-label fw-bold">Technologies</label>
+                    <input type="text" id="techno" class="form-control" placeholder="techno"
+                        v-model="formData.technologies">
                 </div>
+                <button type="submit" class="btn btn-primary" @click="submit">Submit</button>
             </form>
         </div>
 
-        <div class="well">
-            <h3>Dear!</h3>
-            <p>My blog is <a href="">here</a></p>
-            <h4>My favourite book is ''</h4>
-            <img src="" alt="">
+        <div class="well" v-if="showDetails">
+            <h3>Dear {{ fullname}} !</h3>
+            <p v-html="formData.badge"></p>
+            <p>My blog is <a :href="formData.url">here</a></p>
+            <h4>My favourite book is '{{ book.title }}'</h4>
+            <img :src="book.url" alt="">
             <p>My technologies</p>
             <ul>
-                <li></li>
+                <li v-for="techno in myTechnologies">{{ techno}}</li>
             </ul>
         </div>
 
-        <div class="well">Please submit the form</div>
+        <div class="well text-muted" v-else>Please submit the form</div>
     </div>
 
     <script>
 
         new Vue({
             el: '#app',
-            
+            data: {
+                formData: {
+                    firstname: '',
+                    lastname: '',
+                    url: 'http://www.',
+                    badge: '',
+                    bookisbn: '',
+                    technologies: ''
+                },
+                showDetails: false,
+                book: {
+                    title: '',
+                    url: ''
+                }
+            },
+            computed: {
+                fullname() {
+                    return `${this.formData.firstname} ${this.formData.lastname}`
+                },
+                myTechnologies() {
+                    return this.formData.technologies.split(',')
+                }
+            },
+            watch: {
+                'formData.bookisbn': async function () {
+                    const url = `https://openlibrary.org/api/books?bibkeys=ISBN:${this.formData.bookisbn}&format=json&jscmd=data`
+                    const res = await fetch(url)
+                    const data = await res.json()
+                    const inst = this
+                    inst.book.title = data[`ISBN:${inst.formData.bookisbn}`].title
+                    inst.book.url = data[`ISBN:${inst.formData.bookisbn}`].cover.large
+                }
+            },
+            methods: {
+                submit(e) {
+                    e.preventDefault()
+                    this.showDetails = true
+                }
+            }
         })
     </script>
 </body>
