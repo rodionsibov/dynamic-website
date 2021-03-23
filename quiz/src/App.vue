@@ -1,9 +1,11 @@
 <template>
   <Header />
-  <div class="container mt-5 text-center">
+  <div class="container mt-4 text-center">
     <div class="row">
-      <div class="col sm offset-3">
-        <QuestionBox />
+      <div class="col-sm-6 offset-3">
+        <QuestionBox 
+        v-if="questions.length"
+        :currentQuestion="questions[index]" :next="next"/>
       </div>
     </div>
   </div>
@@ -19,8 +21,36 @@ export default {
     Header,
     QuestionBox,
   },
+  data() {
+    return {
+      questions: [],
+      index: 0,
+    };
+  },
+  methods: {
+    next() {
+      this.index++;
+    },
+  },
+  mounted() {
+    fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple", {
+      method: "get",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((jsonData) => {
+        console.log(jsonData.results);
+        this.questions = jsonData.results;
+      });
+  },
 };
 </script>
 
 <style>
+@media (max-width: 576px) {
+  .col-sm-6.offset-3 {
+    margin-left: 0;
+  }
+}
 </style>
