@@ -1,8 +1,7 @@
 <template>
   <div class="calculator">
     <div id="display" class="display">
-      <small>{{ calc }}</small>
-      {{ currentNumber }}
+      {{ calc }}
     </div>
     <div class="nums-container">
       <button class="light-gray ac big-h" @click="handleClick">AC</button>
@@ -36,8 +35,7 @@ export default {
     return {
       nums: [7, 8, 9, 4, 5, 6, 1, 2, 3, 0],
       ops: ["/", "*", "-", "+", "="],
-      currentNumber: "0",
-      calc: null,
+      calc: "0",
       operation: null,
       lastPressed: null,
     };
@@ -48,69 +46,33 @@ export default {
 
       switch (innerText) {
         case "AC": {
-          this.currentNumber = "0";
-          this.calc = null;
+          this.calc = "0";
           break;
         }
         case "=": {
-          const evaluated = eval(this.calc);
-          this.currentNumber = evaluated;
-          this.calc = evaluated;
+          this.calc = eval(this.calc);
           break;
         }
         case ".": {
-          if (!this.currentNumber.includes(".")) {
-            this.currentNumber += innerText;
-          }
           break;
         }
         default: {
-          console.log(this.currentNumber)
-          this.calc = this.currentNumber === '0' ? innerText : this.currentNumber + innerText
-          this.currentNumber = this.currentNumber === '0' ? innerText : this.currentNumber + innerText
-          this.lastPressed = innerText
+          let e;
+          if (this.ops.includes(this.lastPressed)) {
+            if (this.ops.includes(this.lastPressed) && innerText !== "-") {
+              e = this.calc.slice(0, -3) + ` ${innerText} `;
+            } else {
+              e = `${this.calc} ${innerText} `;
+            }
+          } else {
+            e = this.calc === "0" ? innerText : this.calc + innerText;
+          }
+          console.log(e);
+
+          this.calc = e;
+          this.lastPressed = innerText;
         }
       }
-
-      // const { innerText } = e.target;
-      // if (!Number.isNaN(Number(innerText))) {
-      //   if (this.currentNumber === "0") {
-      //     this.currentNumber = innerText;
-      //   } else {
-      //     this.currentNumber += innerText;
-      //   }
-      //   return;
-      // }
-      // switch (innerText) {
-      //   case "AC": {
-      //     this.currentNumber = "0";
-      //     this.calc = null;
-      //     this.operation = null;
-      //     break;
-      //   }
-      //   case ".": {
-      //     if (!this.currentNumber.includes(".")) {
-      //       this.currentNumber += innerText;
-      //     }
-      //     break;
-      //   }
-      //   default: {
-      //     if (!this.operation) {
-      //       this.operation = innerText;
-      //       this.calc = this.currentNumber;
-      //       this.currentNumber = "";
-      //     } else if(innerText === '=') {
-      //       const evaluated = eval(
-      //         `${this.calc} ${this.operation} ${this.currentNumber}`
-      //       );
-      //       this.operation = null;
-      //       this.calc = evaluated;
-      //       this.currentNumber = evaluated;
-      //     } else {
-      //       this.operation = innerText
-      //     }
-      //   }
-      // }
     },
   },
 };
