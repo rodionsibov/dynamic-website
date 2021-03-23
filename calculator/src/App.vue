@@ -1,20 +1,32 @@
 <template>
   <div class="calculator">
-    <div id="display" class="display">141</div>
+    <div id="display" class="display">7243</div>
+    <div class="nums-container">
+      <button class="light-gray ac big-h">AC</button>
+      <button v-for="(num, index) in nums" :key="index" class="dark-gray" :class="[num === 0 ? 'big-h' : '']">
+        {{ num }}
+      </button>
+      <button class="light-gray">.</button>
+
+    </div>
+    <div class="ops-container">
+      <button v-for="(op, index) in ops" :key="index" class="orange">
+        {{ op }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
-      num: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      op: ['=', '+', '-', '/', '*', 'ac'],
-    }
-  }
-}
+      nums: [7, 8, 9, 4, 5, 6, 1, 2, 3, 0],
+      ops: ["/", "×", "-", "+", "="],
+    };
+  },
+};
 </script>
 
 <style>
@@ -50,6 +62,16 @@ body {
   padding: 10px;
 }
 
+.nums-container {
+  user-select: none;
+  width: 75%;
+}
+
+.ops-container {
+  user-select: none;
+  width: 25%;
+}
+
 button {
   width: 50px;
   height: 50px;
@@ -57,6 +79,19 @@ button {
   border-radius: 50%;
   font-size: 20px;
   border: none;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 
 button.big-v {
@@ -80,5 +115,9 @@ button.dark-gray {
 
 button.light-gray {
   background-color: darkgray;
+}
+
+button.ac {
+  margin-right: 50%;
 }
 </style>
