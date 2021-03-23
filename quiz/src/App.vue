@@ -1,11 +1,14 @@
 <template>
-  <Header />
+  <Header :numCorrect="numCorrect" :numTotal="numTotal" />
   <div class="container mt-4 text-center">
     <div class="row">
       <div class="col-sm-6 offset-3">
-        <QuestionBox 
-        v-if="questions.length"
-        :currentQuestion="questions[index]" :next="next"/>
+        <QuestionBox
+          v-if="questions.length"
+          :currentQuestion="questions[index]"
+          :next="next"
+          :increment="increment"
+        />
       </div>
     </div>
   </div>
@@ -25,11 +28,19 @@ export default {
     return {
       questions: [],
       index: 0,
+      numCorrect: 0,
+      numTotal: 0,
     };
   },
   methods: {
     next() {
       this.index++;
+    },
+    increment(isCorrect) {
+      if (isCorrect) {
+        this.numCorrect++;
+      }
+      this.numTotal++;
     },
   },
   mounted() {
