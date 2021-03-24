@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <div id="display" class="display">
-      {{ calc }}
+      {{ result }}
     </div>
     <div class="nums-container">
       <button class="light-gray ac big-h" @click="handleClick">AC</button>
@@ -35,9 +35,7 @@ export default {
     return {
       nums: [7, 8, 9, 4, 5, 6, 1, 2, 3, 0],
       ops: ["/", "*", "-", "+", "="],
-      calc: "0",
-      operation: null,
-      lastPressed: null,
+      result: "0",
     };
   },
   methods: {
@@ -46,31 +44,22 @@ export default {
 
       switch (innerText) {
         case "AC": {
-          this.calc = "0";
+          this.result = "0";
           break;
         }
         case "=": {
-          this.calc = eval(this.calc);
+          this.result = eval(this.result).toString();
+          this.result = this.result.slice(0, 10)
           break;
         }
         case ".": {
+          if (!this.result.includes(".")) {
+            this.result += ".";
+          }
           break;
         }
         default: {
-          let e;
-          if (this.ops.includes(this.lastPressed)) {
-            if (this.ops.includes(this.lastPressed) && innerText !== "-") {
-              e = this.calc.slice(0, -3) + ` ${innerText} `;
-            } else {
-              e = `${this.calc} ${innerText} `;
-            }
-          } else {
-            e = this.calc === "0" ? innerText : this.calc + innerText;
-          }
-          console.log(e);
-
-          this.calc = e;
-          this.lastPressed = innerText;
+          this.result = this.result.startsWith('0') ? innerText : this.result + innerText;
         }
       }
     },
