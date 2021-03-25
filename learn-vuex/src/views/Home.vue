@@ -1,34 +1,31 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <div class="counter">{{ counter }}</div>
-    <div class="buttons">
-      <button @click="decreaseCounter">-</button>
-      <button @click="increaseCounter">+</button>
-    </div>
+    <counter />
+    <counter-squared />
+    <buttons />
+    <color-code />
   </div>
 </template>
 
 <script>
+import Buttons from "../components/Buttons.vue";
+import ColorCode from '../components/ColorCode.vue';
+import Counter from "../components/Counter.vue";
+import CounterSquared from "../components/CounterSquared.vue";
+
 export default {
   name: "Home",
-  data() {
-    return {
-      counter: 0
-    };
+  components: {
+    Counter,
+    CounterSquared,
+    Buttons,
+    ColorCode,
   },
-  methods: {
-    increaseCounter(){
-      this.counter++
-    },
-    decreaseCounter(){
-      this.counter--
-    }
-  }
 };
 </script>
 
-<style scoped>
+<style>
 div {
   margin-bottom: 10px;
 }
