@@ -50,6 +50,18 @@ export default {
       isPlaying: false,
     };
   },
+  watch: {
+    sessionCount() {
+      if (this.currentTimer === "Session") {
+        this.clockCount = this.sessionCount * 60;
+      }
+    },
+    breakCount() {
+      if (this.currentTimer !== "Session") {
+        this.clockCount = this.breakCount * 60;
+      }
+    },
+  },
   methods: {
     convertToTime(count) {
       let minutes = Math.floor(count / 60);
@@ -95,20 +107,22 @@ export default {
                 : this.sessionCount * 60;
           } else {
             this.clockCount--;
+            document.body.style.backgroundColor = `hsl(${this.clockCount}, 50%, 50%)`;
           }
         }, 1000);
         this.isPlaying = true;
       }
     },
     handleReset() {
-      (this.breakCount = 5),
-        (this.sessionCount = 25),
-        (this.clockCount = 25 * 60),
-        (this.currentTimer = "Session"),
-        (this.isPlaying = false),
-        clearInterval(this.loop);
+      this.breakCount = 5;
+      this.sessionCount = 25;
+      this.clockCount = 25 * 60;
+      this.currentTimer = "Session";
+      this.isPlaying = false;
+      clearInterval(this.loop);
       this.$refs.audio.pause();
       this.$refs.audio.currentTime = 0;
+      document.body.style.backgroundColor = 'navy';
     },
   },
   unmounted() {
@@ -134,6 +148,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  transition: 0.5s;
 }
 
 .flex {
@@ -144,11 +159,15 @@ body {
 }
 
 .time-container {
-  margin: 20px;
+  margin: 0 20px;
+}
+
+.time-container span {
+  font-weight: 700;
 }
 
 button {
-  background-color: blue;
+  background-color: #111;
   cursor: pointer;
   border: none;
   padding: 15px;
@@ -168,15 +187,21 @@ button {
   border-radius: 10px;
   padding: 20px 40px;
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 40px;
   width: 250px;
 }
 
 .clock-container h1 {
   margin: 0;
+  font-weight: 100;
 }
 
 .clock-container span {
+  font-weight: 700;
   font-size: 60px;
+}
+
+h2 {
+  font-weight: 100;
 }
 </style>
