@@ -61,7 +61,14 @@ export default {
         this.isPlaying = false;
       } else {
         this.loop = setInterval(() => {
-          this.clockCount--;
+          if (this.clockCount === 0) {
+            this.currentTimer =
+              (this.currentTimer === "Session") ? "Break" : "Session";
+            this.clockCount =
+              (this.currentTimer !== "Session") ? (this.breakCount * 60) : (this.sessionCount * 60);
+          } else {
+            this.clockCount--;
+          }
         }, 1000);
         this.isPlaying = true;
       }
