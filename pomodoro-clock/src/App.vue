@@ -44,7 +44,7 @@ export default {
     return {
       breakCount: 5,
       sessionCount: 25,
-      clockCount: 2,
+      clockCount: 25 * 60,
       currentTimer: "Session",
       loop: null,
       isPlaying: false,
