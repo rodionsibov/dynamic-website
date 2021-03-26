@@ -19,6 +19,12 @@
   <div class="clock-container">
     <h1>{{ currentTimer }}</h1>
     <span>{{ convertToTime(clockCount) }}</span>
+    <audio
+      ref="audio"
+      preload="metadata"
+      src="https://assets.mixkit.co/sfx/preview/mixkit-censorship-beep-1082.mp3"
+    ></audio>
+
     <div class="flex">
       <button @click="handlePlayPause">
         <i class="fas" :class="[isPlaying ? 'fa-pause' : 'fa-play']"></i>
@@ -38,7 +44,7 @@ export default {
     return {
       breakCount: 5,
       sessionCount: 25,
-      clockCount: 25 * 60,
+      clockCount: 2,
       currentTimer: "Session",
       loop: null,
       isPlaying: false,
@@ -46,15 +52,33 @@ export default {
   },
   methods: {
     convertToTime(count) {
-      const minutes = Math.floor(count / 60);
+      let minutes = Math.floor(count / 60);
       let seconds = count % 60;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
+
       return `${minutes}:${seconds}`;
     },
-    handleBreakDecrease() {},
-    handleBreakIncrease() {},
-    handleSessionDecrease() {},
-    handleSessionIncrease() {},
+    handleBreakDecrease() {
+      if (this.breakCount > 1) {
+        this.breakCount--;
+      }
+    },
+    handleBreakIncrease() {
+      if (this.breakCount < 60) {
+        this.breakCount++;
+      }
+    },
+    handleSessionDecrease() {
+      if (this.sessionCount > 1) {
+        this.sessionCount--;
+      }
+    },
+    handleSessionIncrease() {
+      if (this.sessionCount < 60) {
+        this.sessionCount++;
+      }
+    },
     handlePlayPause() {
       if (this.isPlaying) {
         clearInterval(this.loop);
@@ -62,16 +86,29 @@ export default {
       } else {
         this.loop = setInterval(() => {
           if (this.clockCount === 0) {
+            this.$refs.audio.play();
             this.currentTimer =
-              (this.currentTimer === "Session") ? "Break" : "Session";
+              this.currentTimer === "Session" ? "Break" : "Session";
             this.clockCount =
-              (this.currentTimer !== "Session") ? (this.breakCount * 60) : (this.sessionCount * 60);
+              this.currentTimer !== "Session"
+                ? this.breakCount * 60
+                : this.sessionCount * 60;
           } else {
             this.clockCount--;
           }
         }, 1000);
         this.isPlaying = true;
       }
+    },
+    handleReset() {
+      (this.breakCount = 5),
+        (this.sessionCount = 25),
+        (this.clockCount = 25 * 60),
+        (this.currentTimer = "Session"),
+        (this.isPlaying = false),
+        clearInterval(this.loop);
+      this.$refs.audio.pause();
+      this.$refs.audio.currentTime = 0;
     },
   },
   unmounted() {
@@ -123,6 +160,7 @@ button {
 .actions-wrapper span {
   font-size: 40px;
   margin: 0 10px;
+  width: 50px;
 }
 
 .clock-container {
