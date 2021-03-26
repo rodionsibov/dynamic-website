@@ -1,26 +1,88 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="flex">
+    <!-- Break -->
+    <set-timer
+      title="Break Length"
+      :count="breakCount"
+      :handleDecrease="handleBreakDecrease"
+      :handleIncrease="handleBreakIncrease"
+    />
+    <!-- Session -->
+    <set-timer
+      title="Session Length"
+      :count="sessionCount"
+      :handleDecrease="handleSessionDecrease"
+      :handleIncrease="handleSessionIncrease"
+    />
+  </div>
+  <div>clock goes here</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SetTimer from "./components/SetTimer.vue";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  components: { SetTimer },
+  name: "App",
+  data(){
+    return {
+      breakCount: 5,
+      sessionCount: 25
+    }
+  },
+  methods: {
+    handleBreakDecrease() {},
+    handleBreakIncrease() {},
+    handleSessionDecrease() {},
+    handleSessionIncrease() {},
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background-color: navy;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-container {
+  margin: 20px;
+}
+
+.time-container h1 {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.actions-wrapper button {
+  background-color: blue;
+  cursor: pointer;
+  border: none;
+  padding: 15px;
+  margin: 10px;
+  color: white;
+  font-size: 20px;
+}
+
+.actions-wrapper span {
+  font-size: 40px;
+  margin: 0 10px;
 }
 </style>
