@@ -1,6 +1,6 @@
 <template>
   <div class="time-container">
-    <h1>{{ title }}</h1>
+    <h2>{{ title }}</h2>
     <div class="flex actions-wrapper">
       <button @click="handleDecrease"><i class="fas fa-minus"></i></button>
       <span>{{ count }}</span>
