@@ -7,5 +7,5 @@
 - https://rodionsibov.github.io/dynamic-website/shopping-list
 <!-- - https://rodionsibov.github.io/dynamic-website/portfolio -->
 - [Pomodoro Clock](https://romantic-ardinghelli-bccbd6.netlify.app/)
-
+- [Quiz](https://loving-hypatia-ea787d.netlify.app/)
 
