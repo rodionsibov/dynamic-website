@@ -5,5 +5,7 @@
 - https://rodionsibov.github.io/dynamic-website/markdown-previewer
 - https://rodionsibov.github.io/dynamic-website/drum-machine
 - https://rodionsibov.github.io/dynamic-website/shopping-list
+- https://rodionsibov.github.io/dynamic-website/portfolio
+- https://romantic-ardinghelli-bccbd6.netlify.app/
 
 
